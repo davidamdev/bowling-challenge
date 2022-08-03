@@ -1,77 +1,96 @@
 using System;
-using System.Linq;
 
 public class Game
 {
     private readonly int MAX_ROLE = 10;
     private readonly int MAX_RANDOM = 11;
-    private readonly int STRIKE = 10;
-    private readonly int SPARE = 5;
-    public static readonly int MAX_INDEX = 9;
-    public int CurrentFrame { get; set; } = 0;
+    public int currentRoll = 0;
 
-    private Frame[] Frames = new Frame[10];
+    private int[] frames = new int[10];
+    private int[] rolls = new int[21];
 
-    public void RoleFrame()
+    public void Start()
     {
-        Frames[CurrentFrame] = new Frame();
-        var role1 = role(MAX_RANDOM);
-        Frames[CurrentFrame].Role1 = role1;
-
-        if (CurrentFrame != 9) Frames[CurrentFrame].Role2 = role(MAX_RANDOM-role1);
-        else
+        for (var i = 0; i < frames.Length; i++)
         {
-            var role2 = (MAX_ROLE-role1) == 0 ? role(MAX_RANDOM) : role(MAX_RANDOM-role1);
-            
-            Frames[CurrentFrame].Role2 = role2;
-
-            if (role2 == MAX_ROLE || ((role2 + role1) == MAX_ROLE))
-                Frames[CurrentFrame].Role3 = role(MAX_RANDOM);
+            rollFrame(i);
         }
-
-        CurrentFrame++;
     }
 
-    public int ScoreGame()
+    public void End()
+    {
+        var score = scoreGame();
+        Console.WriteLine($"Gg, your score is: {score}");
+    }
+
+private void rollFrame(int i)
+    {
+        rolls[currentRoll] = getRoll(MAX_RANDOM);
+        currentRoll++;
+        if (rolls[currentRoll - 1] != MAX_ROLE)
+        {
+            rolls[currentRoll] = getRoll(MAX_RANDOM - rolls[currentRoll - 1]);
+            currentRoll++;
+        }
+        else if (finalFrame(i) && rolls[currentRoll - 1] == MAX_ROLE)
+        {
+            rolls[currentRoll] = getRoll(MAX_RANDOM);
+            currentRoll++;
+        }
+        if (finalFrame(i) && finalRoll(i))
+            rolls[currentRoll] = getRoll(MAX_RANDOM);
+    }
+
+    private int scoreGame()
     {
         var score = 0;
-        foreach (var (frame, index) in Frames.Select((value, i) => (value, i)))
+        var roll = 0;
+        for (var i = 0; i < frames.Length; i++)
         {
-            score += getRoundScore(frame, index);
-
-            var role3 = index == 9 ? "/" + frame.Role3 : "";
-            Console.WriteLine($"Round {index+1}: {frame.Role1}/{frame.Role2}{role3} ({frame.Total})");
-        }
-        return score;
-    }
-
-    private int getRoundScore(Frame frame, int index)
-    {
-        var score = frame.Total;
-        if (index > 0)
-        {
-            var previousFrame = Frames[index-1];
-            if (index != MAX_INDEX)
+            if (isSpare(roll))
             {
-                if (previousFrame.Total == MAX_ROLE)
-                {
-                    if (previousFrame.Role2 == 0) score += STRIKE;
-                    else score += SPARE;
-                }
+                score += 10 + rolls[roll+2];
+                roll +=2;
             }
-            else {
-                if (previousFrame.Role2 == 0) score += STRIKE;
-                else score += SPARE;
-                if (frame.Role1 == STRIKE) score += STRIKE;
-                else if (frame.Role1+frame.Role2 == MAX_ROLE) score += SPARE;
-                if (frame.Role3 == MAX_ROLE) score += STRIKE;
+            else if (isStrike(roll))
+            {
+                score += 10 + rolls[roll+1] + rolls[roll+2];
+                roll++;
+            }
+            else 
+            {
+                score += rolls[roll] + rolls[roll+1];
+                roll +=2;
             }
         }
+
         return score;
     }
 
-    private int role(int max)
+    private bool isStrike(int roll)
     {
-        return new Random().Next(0, max);
+        return rolls[roll] == MAX_ROLE;
+    }
+
+    private bool isSpare(int role)
+    {
+        return rolls[role] + rolls[role+1] == 10;
+    }
+
+    private bool finalFrame(int i)
+    {
+        return i == (frames.Length-1);
+    }
+
+    private bool finalRoll(int i)
+    {
+        return (rolls[currentRoll - 1] == 10) || (rolls[currentRoll - 1] + rolls[currentRoll - 2] == 10);
+    }
+
+    public int getRoll(int max) 
+    {
+        var roll = new Random().Next(0, max);
+        Console.WriteLine(roll);
+        return roll;
     }
 }
