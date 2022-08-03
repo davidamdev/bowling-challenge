@@ -19,9 +19,15 @@ A simple C# console app for calculating a bowling score using random rolls.
    - Keep in mind that strikes only take up 1 slot in the array
 
 **Example**
-```c#
 
+```c#
+        game.Start(new int[]{9,0,5,5,10,10,10,10,10,10,10,9,1,10});
+        game.End();
 ```
+
+Use https://bowlinggenius.com/ to compare the results.
+
+![Alt text](/Artifacts/248.PNG "Bowling Score 248")
 
 ## Future Improvements
 
