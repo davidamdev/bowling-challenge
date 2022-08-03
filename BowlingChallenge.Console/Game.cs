@@ -23,7 +23,12 @@ public class Game
         Console.WriteLine($"Gg, your score is: {score}");
     }
 
-private void rollFrame(int i)
+    internal void Start(int[] bumperBowls)
+    {
+        rolls = bumperBowls;
+    }
+
+    private void rollFrame(int i)
     {
         rolls[currentRoll] = getRoll(MAX_RANDOM);
         currentRoll++;
@@ -89,8 +94,6 @@ private void rollFrame(int i)
 
     public int getRoll(int max) 
     {
-        var roll = new Random().Next(0, max);
-        Console.WriteLine(roll);
-        return roll;
+        return new Random().Next(0, max);
     }
 }
