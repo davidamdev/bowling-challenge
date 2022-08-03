@@ -27,7 +27,7 @@ A simple C# console app for calculating a bowling score using random rolls.
 
 Use https://bowlinggenius.com/ to compare the results.
 
-![Alt text](/Artifacts/248.PNG "Bowling Score 248")
+![Alt text](/ImageArtifacts/248.PNG "Bowling Score 248")
 
 ## Future Improvements
 
