@@ -15,8 +15,13 @@ A simple C# console app for calculating a bowling score using random rolls.
 
 ## Testing the application
 
-1. Change lines 19 or 21 of the program.cs class
+1. Change lines [19](https://github.com/davidamdev/bowling-challenge/blob/741918f1d56fcf9c0cffe2d5b2da96da344b3167/BowlingChallenge.Console/Program.cs#L19) or [21](https://github.com/davidamdev/bowling-challenge/blob/741918f1d56fcf9c0cffe2d5b2da96da344b3167/BowlingChallenge.Console/Program.cs#L21) of the program.cs class
    - Keep in mind that strikes only take up 1 slot in the array
+
+**Example**
+```c#
+
+```
 
 ## Future Improvements
 
