@@ -18,7 +18,7 @@ else
         // Everything else takes up 2
         game.Start(new int[]{10,10,10,10,10,10,10,10,10,10,10,10});
         game.End();
-        game.Start(new int[]{9,0,10,10,10,10,10,10,10,10,10,10,10});
+        game.Start(new int[]{9,0,5,5,10,10,10,10,10,10,10,9,1,10});
         game.End();
     }
     else
